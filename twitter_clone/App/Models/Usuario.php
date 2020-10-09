@@ -76,9 +76,16 @@
        }
 
        public function getAll(){
-           $query = "select id, nome, email from usuarios where nome like :nome";
+           $query = "select
+                         id, nome, email
+                     from
+                         usuarios 
+                     where
+                       nome like :nome and id != :id_autenticado";
+
            $stmt = $this->db->prepare($query);
            $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
+           $stmt->bindValue(':id_autenticado',$this->__get('id'));
            $stmt->execute();
 
            return  $stmt->fetchAll(\PDO::FETCH_ASSOC);
