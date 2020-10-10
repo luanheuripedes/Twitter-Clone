@@ -100,5 +100,16 @@
            
         }
 
+        public function remover_tweet(){
+            $this->validaAutenticacao();
+
+            $tweet = Container::getModel('Tweet');
+            $tweet->__set('id', $_GET['id_tweet']);
+            
+            $tweet->remover_tweet();
+
+            header('Location: /timeline');
+        }
+
     }
 ?>

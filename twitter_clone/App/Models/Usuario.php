@@ -79,7 +79,7 @@
            $query = "select
                          u.id,
                          u.nome,
-                        u.email,
+                         u.email,
                         (   select
                                 count(*)
                             from
