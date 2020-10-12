@@ -17,18 +17,36 @@
 
                 $tweet->__set('id_usuario', $_SESSION['id']);
 
-                $tweets = $tweet->getAll();
-
                 /*
                 echo "<pre>";
                     print_r($tweets);
                 echo "</pre>";
                 */
 
+                //variaveis de paginação
+                $total_registros_pagina = 10; //offset;
+                //$deslocamento = 0;
+                $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+                $deslocamento = ($pagina - 1) * $total_registros_pagina;
+
+                /*
+                //--
+                $total_registros_pagina = 10 //offset;
+                $deslocamento = 10;
+                $pagina = 2;
+                */
+
+                //$tweets = $tweet->getAll();
+                $tweets = $tweet->getPorPagina($total_registros_pagina, $deslocamento);
+                $total_tweets = $tweet->getTotalRegistros();
+                $this->view->total_de_paginas = ceil($total_tweets['total']/$total_registros_pagina);
+                $this->view->pagina_ativa = $pagina;
+
                 $this->view->tweets = $tweets;
 
                 $usuario = Container::getModel('Usuario');
                 $usuario->__set('id', $_SESSION['id']);
+
                 $this->view->info_usuario = $usuario->getInfoUsuario();
                 $this->view->total_tweets = $usuario->getTotalTweets();
                 $this->view->total_seguindo = $usuario->getTotalSeguindo();
